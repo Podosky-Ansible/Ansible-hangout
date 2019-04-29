@@ -1,0 +1,18 @@
+- name: configure webserver with nginx
+  hosts: ldp-iso-a
+  become: true
+  task: 
+   - name: install nginx
+     apt: name=nginx update_cache=yes
+   - name: copy nginx config  file 
+     copy: src= files/nginx.conf dest=/etc/nginx/sites-avaliable/default
+   - name: enable configuration
+     file: >
+        dest= /etc/nginx/site-enabled/defualt
+        src= /etc/nginx/site-available/default
+        state= link
+   - name: copy index.html
+     template: src= templates/index.html.js dest= /usr/share/nginx
+  
+
+     
