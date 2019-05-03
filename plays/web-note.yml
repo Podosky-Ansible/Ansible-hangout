@@ -1,21 +1,28 @@
 
 ---
-- name : Configure webserver with nginx
+- name: Configure webserver with nginx
   hosts: webserver
-  become: True
+  sudo: yes
   tasks:
+    - name: Add epel-release repo
+      yum: 
+        name: epel-release
+        state: present
     - name: install nginx
-      apt: name=nginx update_cache=yes
+      yum: pkg=nginx state=installed update_cache=yes
+      state: latest
     - name: copy nginx config  file
-      copy: src=files/nginx.conf dest=/etc/nginx/sites-avaliable/default
+      copy: src=files/nginx.conf dest=/etc/nginx/sites-available/default
+
     - name: enable configuration
-      file:   >
-        dest=/etc/nginx/site-enabled/defualt
-        src=/etc/nginx/site-available/default
+      file: >
+        dest=/etc/nginx/site-enabled/default
+        src=/etc/nginx/site-available/default force=yes
         state=link
+
     - name: copy  index.html
-      template: src=templates/index.html.js dest=/usr/share/nginx
-          mode=0644
+      template: src=templates/index.html.js dest=/usr/share/nginx/html/index.html
+        mode=0644
     - name: restart nginx
       service: name=nginx state=restarted
   
