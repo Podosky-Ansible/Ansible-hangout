@@ -1,23 +1,23 @@
 
 ---
-  - name : Configure webserver with nginx
-    hosts: webserver
-    become: True
-    task:
-      - name: install nginx
-        apt: name=nginx update_cache=yes
-      - name:  copy nginx config  file 
-        copy: src= files/nginx.conf dest=/etc/nginx/sites-avaliable/default
-      -  name: enable configuration
-         file: >
-           dest= /etc/nginx/site-enabled/defualt
-           src= /etc/nginx/site-available/default
-           state= link
-      - name: copy index.html
-        template : src= templates/index.html.js dest= /usr/share/nginx
+- name : Configure webserver with nginx
+  hosts: webserver
+  become: True
+  tasks:
+    - name: install nginx
+      apt: name=nginx update_cache=yes
+    - name: copy nginx config  file
+      copy: src=files/nginx.conf dest=/etc/nginx/sites-avaliable/default
+    - name: enable configuration
+      file:   >
+        dest=/etc/nginx/site-enabled/defualt
+        src=/etc/nginx/site-available/default
+        state=link
+    - name: copy  index.html
+      template: src=templates/index.html.js dest=/usr/share/nginx
           mode=0644
-      -  name: restart nginx
-         service: name=nginx state=restarted
+    - name: restart nginx
+      service: name=nginx state=restarted
   
 
      
