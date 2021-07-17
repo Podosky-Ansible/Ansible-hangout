@@ -3,3 +3,4 @@
 
 ldp-iso-a ansible_host=192.168.1.77  
 ldp-iso-a ansible_host=192.168.1.30
+ldp-iso-c ansible_host=192.168.1.33
